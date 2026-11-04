@@ -1,62 +1,66 @@
-// ===== Кітаптар тізімі (уақытша деректер, кейін дерекқордан алынады) =====
-const books = [
-  { id: 1, title: "Абай жолы", author: "Мұхтар Әуезов", category: "Қазақ әдебиеті", year: 1942, rating: 4.9, color: "#2f5d50" },
-  { id: 2, title: "Көшпенділер", author: "Ілияс Есенберлин", category: "Тарихи роман", year: 1976, rating: 4.8, color: "#8e5a2b" },
-  { id: 3, title: "Қан мен тер", author: "Әбдіжәміл Нұрпейісов", category: "Қазақ әдебиеті", year: 1970, rating: 4.6, color: "#6a3d5a" },
-  { id: 4, title: "Ақ кеме", author: "Шыңғыс Айтматов", category: "Әлем әдебиеті", year: 1970, rating: 4.7, color: "#3b6ea5" },
-  { id: 5, title: "Сөнген жұлдыздар", author: "Мағжан Жұмабаев", category: "Поэзия", year: 1923, rating: 4.5, color: "#4b4b7a" },
-  { id: 6, title: "Кішкентай ханзада", author: "Антуан де Сент-Экзюпери", category: "Әлем әдебиеті", year: 1943, rating: 4.9, color: "#c98d42" },
-  { id: 7, title: "Атомдық әдеттер", author: "Джеймс Клир", category: "Өзін-өзі дамыту", year: 2018, rating: 4.7, color: "#2e8b57" },
-  { id: 8, title: "Алхимик", author: "Пауло Коэльо", category: "Әлем әдебиеті", year: 1988, rating: 4.4, color: "#a0522d" },
-  { id: 9, title: "Қара сөздер", author: "Абай Құнанбайұлы", category: "Қазақ әдебиеті", year: 1890, rating: 4.9, color: "#2b4c3f" },
-  { id: 10, title: "Таза код", author: "Роберт Мартин", category: "Бағдарламалау", year: 2008, rating: 4.6, color: "#34495e" },
-  { id: 11, title: "Бай әке, кедей әке", author: "Роберт Кийосаки", category: "Өзін-өзі дамыту", year: 1997, rating: 4.3, color: "#7a6a2b" },
-  { id: 12, title: "Махаббат қызық мол жылдар", author: "Әзілхан Нұршайықов", category: "Қазақ әдебиеті", year: 1970, rating: 4.5, color: "#a03c5a" }
+// ===== Вакансиялар тізімі (мысал деректер, кейін дерекқордан алынады) =====
+const jobs = [
+  { id: 1, title: "Frontend әзірлеуші", company: "TechNova", city: "Алматы", category: "IT", salary: 650000, format: "Гибрид", posted: 20, color: "#2f5d50" },
+  { id: 2, title: "Python бағдарламашысы", company: "DataSoft", city: "Астана", category: "IT", salary: 800000, format: "Қашықтан", posted: 18, color: "#34495e" },
+  { id: 3, title: "Деректер талдаушысы", company: "InfoLab", city: "Алматы", category: "IT", salary: 700000, format: "Кеңседе", posted: 15, color: "#3b6ea5" },
+  { id: 4, title: "Бухгалтер", company: "Ақ Жол Сервис", city: "Шымкент", category: "Қаржы", salary: 350000, format: "Кеңседе", posted: 12, color: "#8e5a2b" },
+  { id: 5, title: "Қаржы талдаушысы", company: "Алтын Капитал", city: "Астана", category: "Қаржы", salary: 550000, format: "Гибрид", posted: 10, color: "#7a6a2b" },
+  { id: 6, title: "Ағылшын тілі мұғалімі", company: "Bilim Center", city: "Қарағанды", category: "Білім беру", salary: 300000, format: "Кеңседе", posted: 9, color: "#6a3d5a" },
+  { id: 7, title: "Онлайн-курс жетекшісі", company: "EduStep", city: "Алматы", category: "Білім беру", salary: 400000, format: "Қашықтан", posted: 7, color: "#4b4b7a" },
+  { id: 8, title: "Мейіргер", company: "Densaulyq Clinic", city: "Астана", category: "Медицина", salary: 320000, format: "Кеңседе", posted: 6, color: "#2e8b57" },
+  { id: 9, title: "Дәрігер-терапевт", company: "Shipa Med", city: "Алматы", category: "Медицина", salary: 600000, format: "Кеңседе", posted: 5, color: "#2b4c3f" },
+  { id: 10, title: "SMM маманы", company: "Brand Media", city: "Шымкент", category: "Маркетинг", salary: 280000, format: "Қашықтан", posted: 4, color: "#a03c5a" },
+  { id: 11, title: "Маркетолог", company: "Nomad Trade", city: "Қарағанды", category: "Маркетинг", salary: 450000, format: "Гибрид", posted: 3, color: "#a0522d" },
+  { id: 12, title: "HR менеджері", company: "Team Group", city: "Астана", category: "Басқару", salary: 500000, format: "Кеңседе", posted: 1, color: "#c98d42" }
 ];
 
-// ===== Таңдаулылар (браузер жадында сақталады) =====
-function getFavorites() {
+function formatSalary(value) {
+  return value.toLocaleString("ru-RU") + " ₸";
+}
+
+// ===== Сақталған вакансиялар (браузер жадында сақталады) =====
+function getSaved() {
   try {
-    return JSON.parse(localStorage.getItem("favorites")) || [];
+    return JSON.parse(localStorage.getItem("savedJobs")) || [];
   } catch (e) {
     return [];
   }
 }
 
-function toggleFavorite(id) {
-  let favs = getFavorites();
-  favs = favs.includes(id) ? favs.filter((f) => f !== id) : [...favs, id];
+function toggleSaved(id) {
+  let saved = getSaved();
+  saved = saved.includes(id) ? saved.filter((s) => s !== id) : [...saved, id];
   try {
-    localStorage.setItem("favorites", JSON.stringify(favs));
+    localStorage.setItem("savedJobs", JSON.stringify(saved));
   } catch (e) {}
-  return favs.includes(id);
+  return saved.includes(id);
 }
 
-// ===== Кітап карточкасын жасау =====
-function createBookCard(book) {
-  const isFav = getFavorites().includes(book.id);
+// ===== Вакансия карточкасын жасау =====
+function createJobCard(job) {
+  const isSaved = getSaved().includes(job.id);
   const card = document.createElement("article");
-  card.className = "book-card";
+  card.className = "job-card";
   card.innerHTML = `
-    <div class="book-cover" style="background:${book.color}">${book.title}</div>
-    <div class="book-info">
-      <span class="tag">${book.category}</span>
-      <h3>${book.title}</h3>
-      <p class="book-author">${book.author}, ${book.year}</p>
-      <div class="book-meta">
-        <span class="rating">★ ${book.rating}</span>
-        <button class="fav-btn" title="Таңдаулыларға қосу">${isFav ? "❤️" : "🤍"}</button>
+    <div class="job-cover" style="background:${job.color}">${job.company.charAt(0)}</div>
+    <div class="job-info">
+      <span class="tag">${job.category}</span>
+      <h3>${job.title}</h3>
+      <p class="job-author">${job.company} · ${job.city} · ${job.format}</p>
+      <div class="job-meta">
+        <span class="salary">${formatSalary(job.salary)}</span>
+        <button class="fav-btn" title="Вакансияны сақтау">${isSaved ? "❤️" : "🤍"}</button>
       </div>
     </div>`;
   card.querySelector(".fav-btn").addEventListener("click", (e) => {
-    e.target.textContent = toggleFavorite(book.id) ? "❤️" : "🤍";
+    e.target.textContent = toggleSaved(job.id) ? "❤️" : "🤍";
   });
   return card;
 }
 
-function renderBooks(list, container) {
+function renderJobs(list, container) {
   container.innerHTML = "";
-  list.forEach((book) => container.appendChild(createBookCard(book)));
+  list.forEach((job) => container.appendChild(createJobCard(job)));
 }
 
 // ===== Мобильді мәзір =====
@@ -66,29 +70,34 @@ if (burger && nav) {
   burger.addEventListener("click", () => nav.classList.toggle("open"));
 }
 
-// ===== Басты бет: танымал кітаптар =====
-const popularBooks = document.getElementById("popular-books");
-if (popularBooks) {
-  const top = [...books].sort((a, b) => b.rating - a.rating).slice(0, 4);
-  renderBooks(top, popularBooks);
+// ===== Басты бет: жаңа вакансиялар =====
+const latestJobs = document.getElementById("latest-jobs");
+if (latestJobs) {
+  const latest = [...jobs].sort((a, b) => a.posted - b.posted).slice(0, 4);
+  renderJobs(latest, latestJobs);
 }
 
 // ===== Каталог: іздеу, сүзгі, сұрыптау =====
-const catalogBooks = document.getElementById("catalog-books");
-if (catalogBooks) {
+const catalogJobs = document.getElementById("catalog-jobs");
+if (catalogJobs) {
   const searchInput = document.getElementById("search");
   const categorySelect = document.getElementById("category");
+  const citySelect = document.getElementById("city");
   const sortSelect = document.getElementById("sort");
   const resultCount = document.getElementById("result-count");
   const emptyText = document.getElementById("empty");
 
-  // Санаттар тізімін толтыру
-  [...new Set(books.map((b) => b.category))].forEach((cat) => {
-    const option = document.createElement("option");
-    option.value = cat;
-    option.textContent = cat;
-    categorySelect.appendChild(option);
-  });
+  // Санаттар мен қалалар тізімін толтыру
+  function fillSelect(select, values) {
+    [...new Set(values)].forEach((value) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = value;
+      select.appendChild(option);
+    });
+  }
+  fillSelect(categorySelect, jobs.map((j) => j.category));
+  fillSelect(citySelect, jobs.map((j) => j.city));
 
   // Басты беттен келген іздеу сөзі
   const params = new URLSearchParams(window.location.search);
@@ -98,24 +107,27 @@ if (catalogBooks) {
   function applyFilters() {
     const query = searchInput.value.trim().toLowerCase();
     const category = categorySelect.value;
+    const city = citySelect.value;
 
-    let result = books.filter((b) => {
-      const matchText = b.title.toLowerCase().includes(query) || b.author.toLowerCase().includes(query);
-      const matchCategory = category === "all" || b.category === category;
-      return matchText && matchCategory;
+    let result = jobs.filter((j) => {
+      const matchText = j.title.toLowerCase().includes(query) || j.company.toLowerCase().includes(query);
+      const matchCategory = category === "all" || j.category === category;
+      const matchCity = city === "all" || j.city === city;
+      return matchText && matchCategory && matchCity;
     });
 
-    if (sortSelect.value === "rating") result.sort((a, b) => b.rating - a.rating);
+    if (sortSelect.value === "new") result.sort((a, b) => a.posted - b.posted);
+    if (sortSelect.value === "salary") result.sort((a, b) => b.salary - a.salary);
     if (sortSelect.value === "title") result.sort((a, b) => a.title.localeCompare(b.title, "kk"));
-    if (sortSelect.value === "year") result.sort((a, b) => b.year - a.year);
 
-    renderBooks(result, catalogBooks);
-    resultCount.textContent = `Табылды: ${result.length} кітап`;
+    renderJobs(result, catalogJobs);
+    resultCount.textContent = `Табылды: ${result.length} вакансия`;
     emptyText.style.display = result.length ? "none" : "block";
   }
 
   searchInput.addEventListener("input", applyFilters);
   categorySelect.addEventListener("change", applyFilters);
+  citySelect.addEventListener("change", applyFilters);
   sortSelect.addEventListener("change", applyFilters);
   applyFilters();
 }
@@ -167,5 +179,37 @@ if (registerForm) {
     message.className = "message " + (ok ? "success" : "error");
     message.textContent = ok ? `Құттықтаймыз, ${name.value}! Тіркелу сәтті өтті.` : "Қателерді түзетіңіз";
     if (ok) registerForm.reset();
+  });
+}
+
+// Резюме формасы
+const resumeForm = document.getElementById("resume-form");
+if (resumeForm) {
+  resumeForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const { fullname, position, phone, experience } = resumeForm.elements;
+    const message = document.getElementById("form-message");
+
+    const ok = [
+      showError(fullname, fullname.value.trim().length >= 2 ? "" : "Аты-жөніңізді енгізіңіз"),
+      showError(position, position.value.trim() ? "" : "Қалаған лауазымды енгізіңіз"),
+      showError(phone, /^\+?[\d\s()-]{10,}$/.test(phone.value) ? "" : "Дұрыс телефон нөмірін енгізіңіз"),
+      showError(experience, experience.value.trim().length >= 10 ? "" : "Тәжірибеңізді қысқаша жазыңыз")
+    ].every(Boolean);
+
+    message.className = "message " + (ok ? "success" : "error");
+    message.textContent = ok ? "Резюме сақталды!" : "Қателерді түзетіңіз";
+
+    if (ok) {
+      const resume = {
+        fullname: fullname.value,
+        position: position.value,
+        phone: phone.value,
+        experience: experience.value
+      };
+      try {
+        localStorage.setItem("resume", JSON.stringify(resume));
+      } catch (err) {}
+    }
   });
 }
