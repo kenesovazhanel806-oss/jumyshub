@@ -1,128 +1,123 @@
 <!DOCTYPE html>
 <html lang="kk">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>JumysHub — Жұмыс орындары мен резюме платформасы</title>
-    <link rel="stylesheet" href="css/style.css">
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JumysHub — Жұмыс орындары мен резюме платформасы</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
 <body>
-    <!-- Header -->
-    <header class="header">
-          <div class="container">
-                  <a href="index.html" class="logo">💼 JumysHub</a>a>
-                  <button class="burger" aria-label="Мәзір">☰</button>button>
-                  <nav class="nav">
-                            <a href="index.html" class="active">Басты бет</a>a>
-                            <a href="catalog.html">Вакансиялар</a>a>
-                            <a href="resume.html">Резюме жасау</a>a>
-                            <div class="nav-buttons">
-                                        <a href="login.html" class="btn btn-outline">Кіру</a>a>
-                                        <a href="register.html" class="btn">Тіркелу</a>a>
-                            </div>div>
-                  </nav>nav>
-          </div>div>
-    </header>header>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo">💼 JumysHub</a>
+      <button class="burger" aria-label="Мәзір">☰</button>
+      <nav class="nav">
+        <a href="index.html" class="active">Басты бет</a>
+        <a href="catalog.html">Вакансиялар</a>
+        <a href="resume.html">Резюме жасау</a>
+        <div class="nav-buttons">
+          <a href="login.html" class="btn btn-outline">Кіру</a>
+          <a href="register.html" class="btn">Тіркелу</a>
+        </div>
+      </nav>
+    </div>
+  </header>
 
-    <main>
-          <!-- Hero -->
-          <section class="hero">
-                  <div class="container">
-                            <h1>Арманыңыздағы жұмысты табыңыз</h1>
-                          <p>Вакансияларды іздеңіз, резюме жасаңыз және жұмыс берушілерге бір жерден өтініш беріңіз</p>
-                          <form class="search-form" action="catalog.html" method="get">
-                                    <input type="text" name="q" placeholder="Лауазым немесе компания...">
-                                    <button type="submit" class="btn btn-accent">Іздеу</button>button>
-                          </form>form>
-                  </div>div>
-          </section>section>
-    
-        <!-- Санаттар -->
-        <section class="section">
-              <div class="container">
-                      <h2 class="section-title">Салалар</h2>
-                      <div class="categories">
-                                <a href="catalog.html?category=IT" class="category-card">
-                                            <div class="icon">💻</div>div>
-                                            <h3>IT</h3>
-                                </a>a>
-                                <a href="catalog.html?category=Қаржы" class="category-card">
-                                            <div class="icon">📊</div>div>
-                                            <h3>Қаржы</h3>
-                                </a>a>
-                                <a href="catalog.html?category=Білім беру" class="category-card">
-                                            <div class="icon">🎓</div>div>
-                                            <h3>Білім беру</h3>
-                                </a>a>
-                                <a href="catalog.html?category=Медицина" class="category-card">
-                                            <div class="icon">🩺</div>div>
-                                            <h3>Медицина</h3>
-                                </a>a>
-                      </div>div>
-              </div>div>
-        </section>section>
-    
-        <!-- Жаңа вакансиялар -->
-        <section class="section">
-              <div class="container">
-                      <h2 class="section-title">Жаңа вакансиялар</h2>
-                      <div class="jobs-grid" id="latest-jobs"></div>div>
-              </div>div>
-        </section>section>
-    
-        <!-- Мүмкіндіктер -->
-        <section class="section" id="about">
-              <div class="container">
-                      <h2 class="section-title">Неге JumysHub?</h2>
-                      <div class="features">
-                                <div class="feature">
-                                            <div class="icon">🔎</div>div>
-                                            <h3>Жылдам іздеу</h3>
-                                            <p>Вакансияны лауазым, сала немесе қала бойынша бірнеше секундта табыңыз.</p>
-                                </div>div>
-                                <div class="feature">
-                                            <div class="icon">📄</div>div>
-                                            <h3>Онлайн резюме</h3>
-                                            <p>Резюмеңізді бір формада толтырып, оны жұмыс берушілерге ұсыныңыз.</p>
-                                </div>div>
-                                <div class="feature">
-                                            <div class="icon">❤️</div>div>
-                                            <h3>Сақталған вакансиялар</h3>
-                                            <p>Ұнаған вакансияларды сақтап, кейін оларға қайта оралыңыз.</p>
-                                </div>div>
-                      </div>div>
-              </div>div>
-        </section>section>
-    
-        <!-- Call to action -->
-        <section class="section">
-              <div class="container">
-                      <div class="cta">
-                                <h2>Резюмеңіз дайын ба?</h2>
-                                <p>Бірнеше минутта резюме толтырып, жұмыс іздеуді бастаңыз.</p>
-                                <a href="resume.html" class="btn">Резюме жасау</a>a>
-                      </div>div>
-              </div>div>
-        </section>section>
-    </main>
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <h1>Арманыңыздағы жұмысты табыңыз</h1>
+        <p>Вакансияларды іздеңіз, резюме жасаңыз және жұмыс берушілерге бір жерден өтініш беріңіз</p>
+        <form class="search-form" action="catalog.html" method="get">
+          <input type="text" name="q" placeholder="Лауазым немесе компания...">
+          <button type="submit" class="btn btn-accent">Іздеу</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Санаттар -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Салалар</h2>
+        <div class="categories">
+          <a href="catalog.html?category=IT" class="category-card">
+            <div class="icon">💻</div>
+            <h3>IT</h3>
+          </a>
+          <a href="catalog.html?category=Қаржы" class="category-card">
+            <div class="icon">📊</div>
+            <h3>Қаржы</h3>
+          </a>
+          <a href="catalog.html?category=Білім беру" class="category-card">
+            <div class="icon">🎓</div>
+            <h3>Білім беру</h3>
+          </a>
+          <a href="catalog.html?category=Медицина" class="category-card">
+            <div class="icon">🩺</div>
+            <h3>Медицина</h3>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Жаңа вакансиялар -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Жаңа вакансиялар</h2>
+        <div class="jobs-grid" id="latest-jobs"></div>
+      </div>
+    </section>
+
+    <!-- Мүмкіндіктер -->
+    <section class="section" id="about">
+      <div class="container">
+        <h2 class="section-title">Неге JumysHub?</h2>
+        <div class="features">
+          <div class="feature">
+            <div class="icon">🔎</div>
+            <h3>Жылдам іздеу</h3>
+            <p>Вакансияны лауазым, сала немесе қала бойынша бірнеше секундта табыңыз.</p>
+          </div>
+          <div class="feature">
+            <div class="icon">📄</div>
+            <h3>Онлайн резюме</h3>
+            <p>Резюмеңізді бір формада толтырып, оны жұмыс берушілерге ұсыныңыз.</p>
+          </div>
+          <div class="feature">
+            <div class="icon">❤️</div>
+            <h3>Сақталған вакансиялар</h3>
+            <p>Ұнаған вакансияларды сақтап, кейін оларға қайта оралыңыз.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to action -->
+    <section class="section">
+      <div class="container">
+        <div class="cta">
+          <h2>Резюмеңіз дайын ба?</h2>
+          <p>Бірнеше минутта резюме толтырып, жұмыс іздеуді бастаңыз.</p>
+          <a href="resume.html" class="btn">Резюме жасау</a>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <!-- Footer -->
   <footer class="footer">
-      <div class="container">
-            <p>© 2026 JumysHub. Барлық құқықтар қорғалған.</p>
-            <div>
-                      <a href="index.html">Басты бет</a>a>
-                      <a href="catalog.html">Вакансиялар</a>a>
-                      <a href="login.html">Кіру</a>a>
-            </div>
+    <div class="container">
+      <p>© 2026 JumysHub. Барлық құқықтар қорғалған.</p>
+      <div>
+        <a href="index.html">Басты бет</a>
+        <a href="catalog.html">Вакансиялар</a>
+        <a href="login.html">Кіру</a>
       </div>
-  </footer>footer>
+    </div>
+  </footer>
 
-    <script src="js/main.js"></script>
+  <script src="js/main.js"></script>
 </body>
-</html>html>
-
-            </div></p></p></h1>
-    </main>
-</body></title>
-  </head>
+</html>
