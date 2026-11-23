@@ -1,20 +1,19 @@
 <?php
-require __DIR__ . '/includes/functions.php';
-$jobs = require __DIR__ . '/data/jobs.php';
+require __DIR__ . '/includes/init.php';
 
 $pageTitle = 'JumysHub — Жұмыс орындары мен резюме платформасы';
 $activePage = 'home';
 
-// Ең жаңа 4 вакансия
-usort($jobs, fn($a, $b) => $a['posted'] <=> $b['posted']);
-$latestJobs = array_slice($jobs, 0, 4);
+// Ең жаңа 4 вакансия — дерекқордан
+$latestJobs = db()->query(vacancy_select_sql() . ' ORDER BY v.created_at DESC LIMIT 4')->fetchAll();
 
-$categories = [
-    ['name' => 'IT', 'icon' => '💻'],
-    ['name' => 'Қаржы', 'icon' => '📊'],
-    ['name' => 'Білім беру', 'icon' => '🎓'],
-    ['name' => 'Медицина', 'icon' => '🩺'],
-];
+// Салалар және әр саладағы вакансия саны
+$categories = db()->query('SELECT cat.name, cat.icon, COUNT(v.id) AS total
+                           FROM categories cat
+                           LEFT JOIN vacancies v ON v.category_id = cat.id
+                           GROUP BY cat.id, cat.name, cat.icon
+                           ORDER BY total DESC, cat.name
+                           LIMIT 4')->fetchAll();
 
 include __DIR__ . '/includes/header.php';
 ?>
@@ -40,6 +39,7 @@ include __DIR__ . '/includes/header.php';
             <a href="catalog.php?category=<?= urlencode($category['name']) ?>" class="category-card">
               <div class="icon"><?= $category['icon'] ?></div>
               <h3><?= e($category['name']) ?></h3>
+              <p class="muted"><?= (int) $category['total'] ?> вакансия</p>
             </a>
           <?php endforeach; ?>
         </div>

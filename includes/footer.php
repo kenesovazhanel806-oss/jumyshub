@@ -5,7 +5,11 @@
       <div>
         <a href="index.php">Басты бет</a>
         <a href="catalog.php">Вакансиялар</a>
-        <a href="resume.php">Резюме жасау</a>
+        <?php if (is_logged_in()): ?>
+          <a href="profile.php">Жеке кабинет</a>
+        <?php else: ?>
+          <a href="register.php">Тіркелу</a>
+        <?php endif; ?>
       </div>
     </div>
   </footer>

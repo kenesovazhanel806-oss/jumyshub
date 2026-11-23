@@ -1,3 +1,4 @@
+<?php $currentUser = current_user(); ?>
 <!DOCTYPE html>
 <html lang="kk">
 <head>
@@ -15,11 +16,29 @@
       <nav class="nav">
         <a href="index.php" class="<?= $activePage === 'home' ? 'active' : '' ?>">Басты бет</a>
         <a href="catalog.php" class="<?= $activePage === 'catalog' ? 'active' : '' ?>">Вакансиялар</a>
-        <a href="resume.php" class="<?= $activePage === 'resume' ? 'active' : '' ?>">Резюме жасау</a>
+        <?php if ($currentUser && $currentUser['role'] === 'employer'): ?>
+          <a href="employer.php" class="<?= $activePage === 'employer' ? 'active' : '' ?>">Менің вакансияларым</a>
+        <?php else: ?>
+          <a href="resume.php" class="<?= $activePage === 'resume' ? 'active' : '' ?>">Резюме</a>
+        <?php endif; ?>
         <div class="nav-buttons">
-          <a href="login.php" class="btn btn-outline">Кіру</a>
-          <a href="register.php" class="btn">Тіркелу</a>
+          <?php if ($currentUser): ?>
+            <a href="profile.php" class="user-link <?= $activePage === 'profile' ? 'active' : '' ?>">👤 <?= e($currentUser['name']) ?></a>
+            <form action="logout.php" method="post" class="inline-form">
+              <?= csrf_field() ?>
+              <button type="submit" class="btn btn-outline">Шығу</button>
+            </form>
+          <?php else: ?>
+            <a href="login.php" class="btn btn-outline">Кіру</a>
+            <a href="register.php" class="btn">Тіркелу</a>
+          <?php endif; ?>
         </div>
       </nav>
     </div>
   </header>
+
+  <?php if ($flash = get_flash()): ?>
+    <div class="container">
+      <div class="message <?= e($flash['type']) ?> flash"><?= e($flash['message']) ?></div>
+    </div>
+  <?php endif; ?>

@@ -1,32 +1,63 @@
 <?php
-require __DIR__ . '/includes/functions.php';
+require __DIR__ . '/includes/init.php';
+
+if (is_logged_in()) {
+    redirect('profile.php');
+}
 
 $pageTitle = 'Тіркелу — JumysHub';
 $activePage = 'register';
 $errors = [];
-$success = false;
-$registeredName = '';
 
 // Форманы $_POST арқылы өңдеу
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    verify_csrf();
+
     $password = $_POST['password'] ?? '';
     $confirm = $_POST['confirm'] ?? '';
     $data = [
         'name' => input($_POST, 'name'),
-        'email' => input($_POST, 'email'),
+        'email' => mb_strtolower(input($_POST, 'email')),
         'role' => input($_POST, 'role'),
+        'company' => input($_POST, 'company'),
         'password' => is_string($password) ? $password : '',
         'confirm' => is_string($confirm) ? $confirm : '',
     ];
     $errors = validate_register($data);
-    $success = !$errors;
-    if ($success) {
-        $registeredName = $data['name'];
-        $_POST = []; // Сәтті болса, форма тазарады
+
+    // Email бос па — дерекқордан тексеру (prepared statement)
+    if (!isset($errors['email'])) {
+        $stmt = db()->prepare('SELECT id FROM users WHERE email = ?');
+        $stmt->execute([$data['email']]);
+        if ($stmt->fetch()) {
+            $errors['email'] = 'Бұл email бұрын тіркелген';
+        }
+    }
+
+    if (!$errors) {
+        $pdo = db();
+        $pdo->beginTransaction();
+
+        // Құпиясөз ашық күйінде емес, password_hash() арқылы хэш түрінде сақталады
+        $stmt = $pdo->prepare('INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)');
+        $stmt->execute([$data['name'], $data['email'], password_hash($data['password'], PASSWORD_DEFAULT), $data['role']]);
+        $userId = (int) $pdo->lastInsertId();
+
+        // Жұмыс берушіге компания бірден құрылады
+        if ($data['role'] === 'employer') {
+            $stmt = $pdo->prepare('INSERT INTO companies (user_id, name) VALUES (?, ?)');
+            $stmt->execute([$userId, $data['company']]);
+        }
+
+        $pdo->commit();
+
+        login_user(['id' => $userId]);
+        set_flash('success', 'Құттықтаймыз, ' . $data['name'] . '! Аккаунт сәтті құрылды.');
+        redirect($data['role'] === 'employer' ? 'employer.php' : 'resume.php');
     }
 }
 
-$selectedRole = input($_POST, 'role');
+$selectedRole = input($_POST, 'role') ?: 'seeker';
 
 include __DIR__ . '/includes/header.php';
 ?>
@@ -35,21 +66,20 @@ include __DIR__ . '/includes/header.php';
       <h1>Тіркелу</h1>
       <p class="subtitle">Жаңа аккаунт жасаңыз</p>
 
-      <?php if ($success): ?>
-        <div class="message success">Құттықтаймыз, <?= e($registeredName) ?>! Деректер серверде тексерілді. Аккаунт дерекқор қосылғанда сақталады.</div>
-      <?php elseif ($errors): ?>
+      <?php if ($errors): ?>
         <div class="message error">Қателерді түзетіңіз</div>
       <?php endif; ?>
 
       <form action="register.php" method="post" novalidate>
+        <?= csrf_field() ?>
         <div class="form-group">
           <label for="name">Аты-жөні</label>
-          <input type="text" id="name" name="name" value="<?= old('name') ?>" class="<?= invalid_class($errors, 'name') ?>" placeholder="Атыңыз">
+          <input type="text" id="name" name="name" value="<?= old('name') ?>" class="<?= invalid_class($errors, 'name') ?>" placeholder="Атыңыз" maxlength="100">
           <p class="error-text"><?= field_error($errors, 'name') ?></p>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" value="<?= old('email') ?>" class="<?= invalid_class($errors, 'email') ?>" placeholder="example@mail.com">
+          <input type="email" id="email" name="email" value="<?= old('email') ?>" class="<?= invalid_class($errors, 'email') ?>" placeholder="example@mail.com" maxlength="150">
           <p class="error-text"><?= field_error($errors, 'email') ?></p>
         </div>
         <div class="form-group">
@@ -59,6 +89,11 @@ include __DIR__ . '/includes/header.php';
             <option value="employer" <?= $selectedRole === 'employer' ? 'selected' : '' ?>>Жұмыс беруші</option>
           </select>
           <p class="error-text"><?= field_error($errors, 'role') ?></p>
+        </div>
+        <div class="form-group" id="company-group">
+          <label for="company">Компания атауы <span class="hint">(тек жұмыс беруші үшін)</span></label>
+          <input type="text" id="company" name="company" value="<?= old('company') ?>" class="<?= invalid_class($errors, 'company') ?>" placeholder="Мысалы: TechNova" maxlength="150">
+          <p class="error-text"><?= field_error($errors, 'company') ?></p>
         </div>
         <div class="form-group">
           <label for="password">Құпиясөз</label>

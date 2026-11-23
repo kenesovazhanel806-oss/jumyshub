@@ -1,6 +1,5 @@
 <?php
-require __DIR__ . '/includes/functions.php';
-$jobs = require __DIR__ . '/data/jobs.php';
+require __DIR__ . '/includes/init.php';
 
 $pageTitle = 'Вакансиялар — JumysHub';
 $activePage = 'catalog';
@@ -11,38 +10,43 @@ $selectedCategory = input($_GET, 'category');
 $selectedCity = input($_GET, 'city');
 $sort = input($_GET, 'sort');
 
-$categories = array_unique(array_column($jobs, 'category'));
-$cities = array_unique(array_column($jobs, 'city'));
+$categories = db()->query('SELECT name FROM categories ORDER BY name')->fetchAll(PDO::FETCH_COLUMN);
+$cities = db()->query('SELECT DISTINCT city FROM vacancies ORDER BY city')->fetchAll(PDO::FETCH_COLUMN);
+
+// Сұрыптау: пайдаланушы мәні SQL-ге тікелей қосылмайды, тек осы тізімнен таңдалады
 $sortOptions = [
-    'new' => 'Жаңалары алдымен',
-    'salary' => 'Жалақысы жоғары',
-    'title' => 'Атауы бойынша (А-Я)',
+    'new' => ['Жаңалары алдымен', 'v.created_at DESC'],
+    'salary' => ['Жалақысы жоғары', 'v.salary DESC'],
+    'title' => ['Атауы бойынша (А-Я)', 'v.title ASC'],
 ];
 if (!isset($sortOptions[$sort])) {
     $sort = 'new';
 }
 
-// Вакансияларды серверде сүзу
-$result = array_filter($jobs, function ($job) use ($query, $selectedCategory, $selectedCity) {
-    $search = mb_strtolower($query);
-    $matchText = $search === ''
-        || mb_strpos(mb_strtolower($job['title']), $search) !== false
-        || mb_strpos(mb_strtolower($job['company']), $search) !== false;
-    $matchCategory = $selectedCategory === '' || $job['category'] === $selectedCategory;
-    $matchCity = $selectedCity === '' || $job['city'] === $selectedCity;
-    return $matchText && $matchCategory && $matchCity;
-});
+// Сүзгілерді prepared statement параметрлері арқылы құру (SQL инъекциясынан қорғау)
+$where = [];
+$params = [];
+if ($query !== '') {
+    $where[] = '(v.title LIKE ? OR c.name LIKE ?)';
+    $like = '%' . addcslashes($query, '%_\\') . '%';
+    $params[] = $like;
+    $params[] = $like;
+}
+if ($selectedCategory !== '') {
+    $where[] = 'cat.name = ?';
+    $params[] = $selectedCategory;
+}
+if ($selectedCity !== '') {
+    $where[] = 'v.city = ?';
+    $params[] = $selectedCity;
+}
 
-// Сұрыптау
-usort($result, function ($a, $b) use ($sort) {
-    if ($sort === 'salary') {
-        return $b['salary'] <=> $a['salary'];
-    }
-    if ($sort === 'title') {
-        return strcmp($a['title'], $b['title']);
-    }
-    return $a['posted'] <=> $b['posted'];
-});
+$sql = vacancy_select_sql()
+    . ($where ? ' WHERE ' . implode(' AND ', $where) : '')
+    . ' ORDER BY ' . $sortOptions[$sort][1];
+$stmt = db()->prepare($sql);
+$stmt->execute($params);
+$result = $stmt->fetchAll();
 
 include __DIR__ . '/includes/header.php';
 ?>
@@ -79,7 +83,7 @@ include __DIR__ . '/includes/header.php';
 
         <label for="sort">Сұрыптау</label>
         <select id="sort" name="sort">
-          <?php foreach ($sortOptions as $value => $label): ?>
+          <?php foreach ($sortOptions as $value => [$label]): ?>
             <option value="<?= e($value) ?>" <?= $value === $sort ? 'selected' : '' ?>><?= e($label) ?></option>
           <?php endforeach; ?>
         </select>
