@@ -31,3 +31,23 @@ document.querySelectorAll(".fav-btn").forEach((button) => {
     button.textContent = saved.includes(id) ? "❤️" : "🤍";
   });
 });
+
+// Жою алдында растау сұрау (CRUD — Delete)
+document.querySelectorAll(".delete-form").forEach((form) => {
+  form.addEventListener("submit", (event) => {
+    if (!confirm(form.dataset.confirm || "Шынымен жою керек пе?")) {
+      event.preventDefault();
+    }
+  });
+});
+
+// Тіркелу: «Компания атауы» өрісі тек жұмыс берушіге көрінеді
+const roleSelect = document.querySelector("#role");
+const companyGroup = document.querySelector("#company-group");
+if (roleSelect && companyGroup) {
+  const toggleCompany = () => {
+    companyGroup.style.display = roleSelect.value === "employer" ? "block" : "none";
+  };
+  roleSelect.addEventListener("change", toggleCompany);
+  toggleCompany();
+}
