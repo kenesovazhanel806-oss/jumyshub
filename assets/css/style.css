@@ -508,6 +508,43 @@ img {
   padding: 40px;
 }
 
+/* ===== Пагинация (13-апта) ===== */
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.pagination a,
+.pagination span {
+  min-width: 40px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  text-align: center;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.pagination a:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.pagination .current {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.pagination .disabled {
+  opacity: 0.45;
+}
+
 /* ===== Footer ===== */
 .footer {
   background: #1f2a27;
